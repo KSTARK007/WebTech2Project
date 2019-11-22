@@ -29,7 +29,10 @@ movie_table = client.webtech.movie
 counter = client.webtech.orgid_counter
 
 
+
+### =========================================================================================================
 ### recommender functions 
+### =========================================================================================================
 
 number_data = 421261
 number_of_movies_per_view = 15
@@ -93,57 +96,54 @@ def recommend(id,v):
     # print(" ")
     return(R)
 
-
-
-
 ### End of recommender functions
 
 
+
+### =========================================================================================================
+### id increment
 ### =========================================================================================================
 
 
-
-
-
-### id increment
 
 def getNextSequence(collection,name):
     collection.update_one( { '_id': name },{ '$inc': {'seq': 1}})
     return int(collection.find_one({'_id':name})["seq"])
 
-### end of id increment
+
 
 
 ### =========================================================================================================
-
-
-
-
-
-
 ### User based API's
+### =========================================================================================================
 
-##
-@app.route('/api/v1/users', methods=['POST'])
-def process():
+
+## login 
+
+"""
+input
+{
+    username : 
+    password : 
+}
+
+"""
+@app.route('/api/login', methods=['POST'])
+def login():
 
     j = request.get_json()
-    name = j['name']
+    name = j['username']
     password = j['password']
-    # if( len(password) != 40 or not all(c in string.hexdigits for c in password) ):
-    #     return jsonify({'code' : 600})
-
-    # if name and password and password != "da39a3ee5e6b4b0d3255bfef95601890afd80709":
-    #     if(db.count_documents({"name":name})>0):
-    #         return jsonify({'code' : 405})
-    result=db.insert_one({'userId': getNextSequence(counter,"userId"), 'name': name, 'password' : password })
-    
-    return jsonify({'code' : 201})
-    # return jsonify({'code' : 400})
+    val = users_table.find_one({"username":j['username']})
+    if(val is None):
+        return jsonify({'error':'user does not exist'})
+    if(password != val['password']):
+        return jsonify({'error':'wrong password'})   
+    return jsonify({'code' : 200})
 
 
 
-### =========================================================================================================
+
 
 ## sign up and init recommendation 
 """
@@ -173,11 +173,10 @@ def userSignup():
     result=users_table.insert_one({'userId':nextId,"username":j['username'],"password":j['password'],"movies":j['movies'],"recommendation":ll})
     return jsonify({'code':200})
 
-### =========================================================================================================
 
 
 
-### adding new movies watched and re running recomendation
+## adding new movies watched and re running recomendation
 """
 input:
 {
@@ -186,11 +185,12 @@ input:
 
 """
 
-@app.route('/api/v1/addView/<uid>', methods=['POST'])
-def addMovieView():
+@app.route('/api/addView/<uid>', methods=['POST'])
+def addMovieView(uid):
+    uid = int(uid)
     j = request.get_json()
     val = users_table.find_one({"userId":uid})
-    if(val is not None):
+    if(val is None):
         return jsonify({'error':'user does not exist'})
     ll = val["movies"]
     ll.append(int(j["data"]))
@@ -198,15 +198,38 @@ def addMovieView():
     dd = list()
     for i in k.keys():
         dd.append(int(i))
-    users_table.update_one({"userId":uid},{"$unset":{"movies":""}})
-    result=users_table.update_one({'userId':uid,'$set':{'movies':ll}})
+    p = users_table.update_one({"userId":uid},{'$unset':{"movies":""}})
+    result=users_table.update_one({"userId":uid},{"$set":{"movies":ll}})
     users_table.update_one({"userId":uid},{"$unset":{"recommendation":""}})
-    result=users_table.update_one({'userId':uid,'$set':{'recommendation':dd}})
+    result=users_table.update_one({"userId":uid},{"$set":{"recommendation":dd}})
     return jsonify({'code':200})
 
 
+
+## Geting the user ID of the username
+
+"""
+
+Output:
+{
+    data: movieId (int)
+}
+"""
+@app.route('/api/getUserId/<username>', methods=['GET'])
+def getUserId():
+    j = request.get_json()
+    val = users_table.find_one({"username":username})
+    if(val is None):
+        return jsonify({'error':'user does not exist'})   
+    return jsonify({'data':val['userId']})
+
+
+
+### =========================================================================================================
+###  Movie based APIs
 ### =========================================================================================================
 
+#To Be Done - Jaydeep
 
 
 
