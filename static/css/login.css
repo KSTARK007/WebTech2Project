@@ -1,0 +1,49 @@
+
+.form {
+  position: absolute;
+  top: 30%;
+  left: 35%;
+  background-color: rgba(0,0,0,0); /* Black w/opacity */
+  width: 50%;
+  height: 100%;
+  margin: -140px 0 0 -182px;
+  padding: 40px;
+}
+  
+button {
+    position: relative;
+    top: 300px;
+    cursor: pointer;
+    background: rgb(0,0,0);
+    width: 100%;
+    padding: 10px 15px;
+    border: 0;
+    color: #6c6a6a;
+    font-family: monospace;
+    font-size: 28px;
+    font-weight: 400;
+}
+
+#username {
+    width: 100%;
+    border: none;
+    position: relative;
+    top: 100px;
+    background-color: rgba(0,0,0,0);
+    border-bottom: 3px solid #370d36;
+    font-family: monospace;
+    font-size: 17px;
+}
+
+#password {
+    width: 100%;
+    position: relative;
+    top: 200px;
+    border: none;
+    background-color: rgba(0,0,0,0);
+    border-bottom: 3px solid #370d36;
+    font-family: monospace;
+    font-size: 17px;
+}
+
+.error, .valid{display:none;}

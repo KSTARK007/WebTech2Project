@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>MeltDown | HomePage</title>
+	
+<!--Default STYLESHEET -->
+    <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='bootstrap/css/bootstrap.min.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='fonts/font-awesome.min.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='css/w3.css')}}">
+
+	
+
+<!--Default Fonts -->
+	<link rel="stylesheet" href="{{url_for('static',filename='fonts/Lato.css')}}">
+	<link rel="stylesheet" href="{{url_for('static',filename='fonts/openSans.css')}}">
+	<link rel="stylesheet" href="{{url_for('static',filename='fonts/Montserrat.css')}}">
+    
+    
+
+
+<!-- written style sheets  -->
+    <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='css/overlay.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='css/login.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='css/image-overlay.css')}}">
+
+    
+
+
+
+<!-- default JS  -->
+    <script type="text/javascript" src="{{ url_for('static',filename='js/jquery-3.4.1.min.js')}}"></script>
+
+
+
+
+<!-- writen JS  -->
+    
+    <script type="text/javascript" src="{{ url_for('static',filename='js/login.js')}}"></script>
+
+    <script>
+		/* Open */
+		function openNav() {
+		  document.getElementById("myNav").style.width = "100%";
+		}
+
+		/* Close */
+		function closeNav() {
+		  document.getElementById("myNav").style.width = "0%";
+		}
+	</script>
+	<style>
+		
+	</style>
+</head>
+
+<body style="background-color: #323131;">
+	<!-- Navigation -->
+    <nav class="navbar navbar-custom navbar-fixed-top" role="navigation" style="color: white; background-color: black">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-main-collapse">
+                    <i class="fa fa-bars"></i>
+                 </button>
+                <a class="navbar-brand page-scroll" href="#">MeltDown</a>
+            </div>
+            <div class="collapse navbar-collapse navbar-right navbar-main-collapse">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="#" onclick="openNav()"><span class="glyphicon glyphicon-log-in"></span> Login</a>
+                    </li> 
+                    <li>
+                        <a href="#" onclick="openNav()"><span class="glyphicon glyphicon-sign-up"></span> Signup</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- The overlay -->
+	<div id="myNav" class="overlay">
+
+	  
+
+	  <!-- Button to close the overlay navigation -->
+	  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+
+	  <!-- Overlay content -->
+	  
+
+
+	  <!-- Login Page Begins -->
+	  <section class="form animated flipInX">
+		  <h1 style="text-align: center;">Login To Your Account</h1>
+		  <p class="valid">Valid. Please wait a moment.</p>
+		  <p class="error">Error. Please enter correct Username &amp; password.</p>
+		  <form class="loginbox" autocomplete="off">
+		    <input placeholder="Username" type="text" id="username"></input>
+		    <input placeholder="Password" type="password" id="password"></input>
+			<button id="submit">Login</button>
+		  </form>
+	  </section>
+	  <!-- Login Page Ends -->
+	</div>
+
+	<h1  style="margin-top: 5%;margin-bottom: -5% ;color:white;text-align: center;">Pop Movies</h1>
+
+
+	<div class="imageBox" id="0">
+	
+
+	</div>		
+
+	<div class="imageBox" id="1">
+	</div>
+
+
+</body>
+</html>

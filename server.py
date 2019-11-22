@@ -22,6 +22,11 @@ def page_not_found(e):
 def index():
     return render_template('index.html')
 
+@app.route('/login')
+def loginPage():
+    return render_template('login.html')
+
+
 # client = MongoClient('mongo',27017)
 client = MongoClient(port=27017)
 users_table  = client.webtech.user
@@ -130,7 +135,6 @@ input
 """
 @app.route('/api/login', methods=['POST'])
 def login():
-
     j = request.get_json()
     name = j['username']
     password = j['password']
@@ -193,6 +197,8 @@ def addMovieView(uid):
     if(val is None):
         return jsonify({'error':'user does not exist'})
     ll = val["movies"]
+    if(int(j["data"]) in ll):
+        return jsonify({'error':'already added to view'})
     ll.append(int(j["data"]))
     k = recommend(uid,ll)
     dd = list()
@@ -230,6 +236,66 @@ def getUserId():
 ### =========================================================================================================
 
 #To Be Done - Jaydeep
+
+#home page pop movies
+"""
+output
+{
+    data: [<10 movies> (int)]
+}
+"""
+@app.route('/api/popMovie', methods=['GET'])
+def popMovie():
+    l = [1203,296,1198,1580,2858,1291,32,1136,640,185029]
+    return jsonify({"data":l})
+
+
+@app.route('/api/recmovie/<userid>', methods=['GET'])
+def rMovie(userid):
+    val = users_table.find_one({"userId":int(userid)})
+    if(val is None):
+        return jsonify({'error':'user does not exist'})   
+    return jsonify({'data':val['recommendation']})
+
+
+
+# list of movies for signup
+"""
+output
+{
+    data: [ <80 movies> ] <present 20>
+}
+
+# d["Animation"] = [178827,181235,5690,161644,171013,3751,741,27186,181671,166291]
+# d["Biography"] = [74324,56744,527,1228,102819,6620,4211,106100,63876,27020]
+# d["Comedy"] = [73881,163745,190089,184807,187531,176349,170729,3061,164369,167990]
+# d["Crime"] = [1203,190857,3966,2130,162418,111,2917,6898,8645,8042]
+# d["Documentary"] = [100196,118920,1361,172705,117364,1361,1192,183329,105744,173197]
+# d["Drama"] = [33288,2071,5169,4522,2071,27410,97984,27410,186505,192385]
+# d["Horror"] = [179749,155625,2160,7115,640,5489,2664,1345,123107,144976]
+
+"""
+@app.route('/api/signupMovies', methods=['GET'])
+def signupMovie():
+    outMovies = dict()
+    outMovies["data"] = [179749,155625,2160,7115,640,5489,2664,1345,123107,144976,33288,2071,5169,4522,2071,27410,97984,27410,186505,192385,100196,118920,1361,172705,117364,1361,1192,183329,105744,173197,1203,190857,3966,2130,162418,111,2917,6898,8645,8042,73881,163745,190089,184807,187531,176349,170729,3061,164369,167990,86892,185087,7072,1224,71468,117928,1209,1301,2947,189333,178827,181235,5690,161644,171013,3751,741,27186,181671,166291,178827,181235,5690,161644,171013,3751,741,27186,181671,166291]
+    final = random.sample(outMovies["data"],40)
+    return jsonify({"data":final})
+
+
+
+
+# Given a mi=ovie ID return the details of the movie
+@app.route('/api/movie/<movieId>', methods=['GET'])
+def Movie(movieId):
+    caty = movie_table.find({"GlobalId" : movieId},{'_id':False})
+    ret = list()
+    for x in caty:
+        ret.append(x)
+    return jsonify({'ret':ret}),200
+
+
+
 
 
 
